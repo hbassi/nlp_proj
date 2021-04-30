@@ -10,8 +10,8 @@ from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import transformers
 import torch
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-print(device)
+device = 'cpu' if torch.cuda.is_available() else 'cpu'
+#print(device)
 from torch import nn
 import torch.nn.functional as F
 #from tqdm import trange
@@ -38,7 +38,7 @@ class TransTCN(nn.Module):
         #print(input_ids,attention_mask )
         output = input_ids
         for i in range(self.n):
-
+            print(i)
             output = self.bert_model(output, attention_mask)
             output = output[1]
             #print('BERT Output: ', output)
@@ -52,6 +52,7 @@ class TransTCN(nn.Module):
 
             output = self.linear(output)
             output = output.to(device).long()
+            print(output.shape)
 
 
 
