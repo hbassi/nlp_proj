@@ -32,6 +32,7 @@ class TransTCN(nn.Module):
         self.linear = nn.Linear(hidden_state,150)
         self.sm = nn.Softmax(dim=1)
         self.n=n
+        self.relu = nn.ReLU()
 
     #(bert -> tcn) * n -> bert -> linear -> softmax
     def forward(self, input_ids, attention_mask):
@@ -51,7 +52,8 @@ class TransTCN(nn.Module):
             
 
             output = self.linear(output)
-            output = output.to(device).long()
+            output = self.relu(output)
+            output = output.long()
             print(output.shape)
 
 
