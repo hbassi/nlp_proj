@@ -28,7 +28,8 @@ class TransTCN(nn.Module):
         self.bert_model = transformers.BertModel.from_pretrained('bert-base-uncased')
         self.tcn = TemporalConvNet(input_size, num_channels, kernel_size, dropout=dropout)
         self.drop = nn.Dropout(p=dropout)
-        self.linear = nn.Linear(hidden_state, classes)
+        self.finalLinear = nn.Linear(hidden_state, classes)
+        self.linear = nn.Linear(hidden_state,150)
         self.sm = nn.Softmax(dim=1)
         self.n=n
 
@@ -37,11 +38,26 @@ class TransTCN(nn.Module):
         #print(input_ids,attention_mask )
         output = input_ids
         for i in range(self.n):
+
             output = self.bert_model(output, attention_mask)
             output = output[1]
-            output = self.tcn(output)
+            #print('BERT Output: ', output)
+            output = output.unsqueeze(dim=1)
+            #print('Unsqueezed Output: ', output)
+            #import pdb; pdb.set_trace()
+           
+            output = self.tcn(output).squeeze(dim=1)
+            #import pdb; pdb.set_trace()
+            
+
+            output = self.linear(output)
+            output = output.to(device).long()
+
+
+
         output = self.bert_model(output, attention_mask)
+        output = output[1]
         result = self.drop(output)
-        result = self.linear(output)
+        result = self.finalLinear(output)
 
         return result
