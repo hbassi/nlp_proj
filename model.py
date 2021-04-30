@@ -39,7 +39,7 @@ class TransTCN(nn.Module):
         #print(input_ids,attention_mask )
         output = input_ids
         for i in range(self.n):
-            print(i)
+            #print(i)
             output = self.bert_model(output, attention_mask)
             output = output[1]
             #print('BERT Output: ', output)
@@ -54,7 +54,7 @@ class TransTCN(nn.Module):
             output = self.linear(output)
             output = self.relu(output)
             output = output.long()
-            print(output.shape)
+            #print(output.shape)
 
 
 
