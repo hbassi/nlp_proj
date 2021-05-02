@@ -52,12 +52,12 @@ class DataAugmentation:
 
             print("Running first augmentation...")
             aug = nac.KeyboardAug()
-            augmented_text = X.apply(aug.augment)
+            augmented_text = self.data.apply(aug.augment)
             augmented_text.to_csv(self.PATH + 'typo_aug.csv', index = False)
 
             print("Running second augmentation...")
             aug_del = naw.RandomWordAug(action='delete')
-            augmented_text4 = X.apply(aug_del.augment)
+            augmented_text4 = self.data.apply(aug_del.augment)
             augmented_text4.to_csv(self.PATH+'delete_aug.csv', index=False)
 
         print("Done.")
