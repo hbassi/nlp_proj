@@ -30,35 +30,43 @@ class DataAugmentation:
         print("Data has been read into environment and path has been set...")
 
     def run(self):
-        if self.aug_num == '1':
-
-            aug = nac.KeyboardAug()
-            augmented_text = self.data.apply(aug.augment)
-            augmented_text.to_csv(self.PATH + 'testcolab.csv', index = False)
-
-        elif self.aug_num == '2':
+        X = self.data['text']
+        y = self.data['stars']
+        if self.aug_num == '2':
 
             print("Running first augmentation...")
             aug_syn = naw.SynonymAug(aug_src='wordnet')
-            augmented_text2 = self.data.apply(aug_syn.augment)
-            augmented_text2.to_csv(self.PATH + 'synonym_aug.csv', index=False)
+            augmented_text2 = X.apply(aug_syn.augment)
+            df = pd.DataFrame()
+            df['text'] = augmented_text2
+            df['stars'] = y
+            df.to_csv(self.PATH + 'synonym_aug.csv', index=False)
             
             print("Running second augmentation...")
             aug_rws = naw.RandomWordAug(action='swap')
-            augmented_text3 = self.data.apply(aug_rws.augment)
-            augmented_text3.to_csv(self.PATH + 'swap_aug.csv', index=False)
+            augmented_text3 = X.apply(aug_rws.augment)
+            df = pd.DataFrame()
+            df['text'] = augmented_text3
+            df['stars'] = y
+            df.to_csv(self.PATH + 'swap_aug.csv', index=False)
 
         elif self.aug_num == '3':
 
             print("Running first augmentation...")
             aug = nac.KeyboardAug()
-            augmented_text = self.data.apply(aug.augment)
-            augmented_text.to_csv(self.PATH + 'typo_aug.csv', index = False)
+            augmented_text = X.apply(aug.augment)
+            df = pd.DataFrame()
+            df['text'] = augmented_text
+            df['stars'] = y
+            df.to_csv(self.PATH + 'typo_aug.csv', index = False)
 
             print("Running second augmentation...")
             aug_del = naw.RandomWordAug(action='delete')
-            augmented_text4 = self.data.apply(aug_del.augment)
-            augmented_text4.to_csv(self.PATH+'delete_aug.csv', index=False)
+            augmented_text4 = X.apply(aug_del.augment)
+            df = pd.DataFrame()
+            df['text'] = augmented_text4
+            df['stars'] = y
+            df.to_csv(self.PATH+'delete_aug.csv', index=False)
 
         print("Done.")
 
