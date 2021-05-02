@@ -33,7 +33,7 @@ class DataAugmentation:
         if self.aug_num == '1':
 
             aug = nac.KeyboardAug()
-            augmented_text = X.apply(aug.augment)
+            augmented_text = self.data.apply(aug.augment)
             augmented_text.to_csv(self.PATH + 'testcolab.csv', index = False)
 
         elif self.aug_num == '2':
