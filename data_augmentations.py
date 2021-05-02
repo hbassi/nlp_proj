@@ -16,7 +16,6 @@ class DataAugmentation:
     def __init__(self, aug_num):
         self.PATH = None
         self.aug_num = aug_num
-        print(type(self.aug_num))
         self.data = pd.read_json('yelp_review_training_dataset.jsonl',lines=True)
         if self.aug_num == '1':
             self.data = pd.read_json('/content/gdrive/MyDrive/nlp_proj/yelp_review_training_dataset.jsonl',lines=True)
@@ -28,6 +27,7 @@ class DataAugmentation:
             self.PATH = '/Users/raymondwang/desktop/cs182/nlp_proj/augmentations/'
         else:
             print('The number entered does not correlate to a path')
+        print("Data has been read into environment and path has been set...")
 
     def run(self):
         if self.aug_num == '1':
