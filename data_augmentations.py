@@ -21,8 +21,8 @@ class DataAugmentation:
             self.data = pd.read_json('/content/gdrive/MyDrive/nlp_proj/yelp_review_training_dataset.jsonl',lines=True)
             self.PATH = '/content/gdrive/MyDrive/nlp_proj/augmentations/'
         elif self.aug_num == '2':
-            print("HE")
-            self.PATH = '/Users/edmundwang/Desktop/cs182/nlp_proj/augmentations/'
+            print("me")
+            self.PATH = 'C:/Users/Hardeep/Desktop/nlp_proj/augmentations'
         elif self.aug_num == '3':
             self.PATH = '/Users/raymondwang/desktop/cs182/nlp_proj/augmentations/'
         else:
@@ -42,13 +42,13 @@ class DataAugmentation:
             df['stars'] = y
             df.to_csv(self.PATH + 'synonym_aug.csv', index=False)
             
-            print("Running second augmentation...")
-            aug_rws = naw.RandomWordAug(action='swap')
-            augmented_text3 = X.apply(aug_rws.augment)
-            df = pd.DataFrame()
-            df['text'] = augmented_text3
-            df['stars'] = y
-            df.to_csv(self.PATH + 'swap_aug.csv', index=False)
+            # print("Running second augmentation...")
+            # aug_rws = naw.RandomWordAug(action='swap')
+            # augmented_text3 = X.apply(aug_rws.augment)
+            # df = pd.DataFrame()
+            # df['text'] = augmented_text3
+            # df['stars'] = y
+            # df.to_csv(self.PATH + 'swap_aug.csv', index=False)
 
         elif self.aug_num == '3':
 
