@@ -8,10 +8,14 @@ MAKE SURE DEVICE IS SET CORRECTLY IN EVERY FILE.
 '''
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
+'''
+Hyperparameters
+'''
+MAXLENGTH = 185
 
 def eval(text):
 	# This is where you call your model to get the number of stars output
-	tokenText = tokenize(text)
+	tokenText = tokenize(text, MAXLENGTH)
 	inputIds = tokenText['input_ids'].to(DEVICE)
 	attentionMask = tokenText['attention_mask'].to(DEVICE)
 	
