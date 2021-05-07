@@ -1,6 +1,7 @@
 import json, sys
 from data_processing import tokenize
 import torch
+from model_loader import load_model
 
 '''
 MAKE SURE DEVICE IS SET CORRECTLY IN EVERY FILE.
@@ -8,14 +9,14 @@ MAKE SURE DEVICE IS SET CORRECTLY IN EVERY FILE.
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
-
 def eval(text):
 	# This is where you call your model to get the number of stars output
 	tokenText = tokenize(text)
 	inputIds = tokenText['input_ids'].to(DEVICE)
 	attentionMask = tokenText['attention_mask'].to(DEVICE)
-
-	model = 'YOUR CODE HERE'
+	
+	#Update this in order to change model to use
+	model = load_model('bert')
 	
 	outputTensor = model(inputIds, attentionMask)
 	rating = torch.argmax(outputTensor).item()
