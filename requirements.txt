@@ -12,8 +12,9 @@ requests==2.25.1
 sacremoses==0.0.45
 six==1.16.0
 tokenizers==0.10.2
-torch==1.7.1
 tqdm==4.60.0
 transformers==4.5.1
 typing-extensions==3.10.0.0
 urllib3==1.26.4
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.7.1+cu101
