@@ -11,7 +11,7 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 '''
 Hyperparameters
 '''
-MAXLENGTH = 185
+MAXLENGTH = 150
 
 def eval(text):
 	# This is where you call your model to get the number of stars output
