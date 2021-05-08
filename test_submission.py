@@ -13,17 +13,19 @@ Hyperparameters
 '''
 MAXLENGTH = 150
 
+
+#Update this in order to change model to use
+MODEL = load_model('bert')
+MODEL = MODEL.to(DEVICE)
+
 def eval(text):
 	# This is where you call your model to get the number of stars output
 	tokenText = tokenize(text, MAXLENGTH)
 	inputIds = tokenText['input_ids'].to(DEVICE)
 	attentionMask = tokenText['attention_mask'].to(DEVICE)
 	
-	#Update this in order to change model to use
-	model = load_model('bert')
-	model = model.to(DEVICE)
+	outputTensor = MODEL(inputIds, attentionMask)
 	
-	outputTensor = model(inputIds, attentionMask)
 	rating = torch.argmax(outputTensor).item()
 	return rating + 1
 
