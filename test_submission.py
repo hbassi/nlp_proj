@@ -21,6 +21,7 @@ def eval(text):
 	
 	#Update this in order to change model to use
 	model = load_model('bert')
+	model = model.to(DEVICE)
 	
 	outputTensor = model(inputIds, attentionMask)
 	rating = torch.argmax(outputTensor).item()
