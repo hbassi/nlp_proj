@@ -22,7 +22,7 @@ TRAIN_TEST_SIZE = 0.1
 VAL_TEST_SIZE = 0.4
 RANDOM_STATE = 123
 
-TEST_SIZE = 500
+TEST_SIZE = 32
 MAX_LENGTH = 150
 
 BATCH_SIZE = 16
@@ -167,4 +167,4 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracies')
 plt.title('Training/Validation Accuracies per Epoch')
 #CHANGE THE NAME FOR EACH DIFF RUN FOR MORE PICS
-plt.savefig('TransTCN_accuracies')
+# plt.savefig('TransTCN_accuracies')

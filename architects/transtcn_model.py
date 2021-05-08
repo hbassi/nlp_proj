@@ -32,10 +32,10 @@ class TransTCN(nn.Module):
         self.is_single_bert = is_single_bert
         self.berts = []
         if self.is_single_bert:
-            self.berts += [transformers.BertModel.from_pretrained('bert-base-cased').to(DEVICE)]
+            self.berts += [transformers.BertModel.from_pretrained('bert-base-uncased').to(DEVICE)]
         else:
             for i in range(num_augmentations):
-                self.berts.append(transformers.BertModel.from_pretrained('bert-base-cased').to(DEVICE))
+                self.berts.append(transformers.BertModel.from_pretrained('bert-base-uncased').to(DEVICE))
         self.tcn = TemporalConvNet(input_size, num_channels, kernel_size, dropout=dropout)
         self.finalLinear = nn.Linear(hidden_state, classes)
         
