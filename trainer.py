@@ -7,6 +7,7 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 from architects.transtcn_model import TransTCN
 from trainer_utils import trainingTransTCN, evaluateTransTCN
 from tqdm import trange
+import matplotlib.pyplot as plt
 
 '''
 MAKE SURE DEVICE IS SET CORRECTLY IN EVERY FILE.
@@ -145,6 +146,9 @@ scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0,num_tr
 '''
 Training loop
 '''
+epochs = []
+train_accs = []
+val_accs = []
 for epoch in trange(NUM_EPOCHS):
     print('Epoch: ' , str(epoch + 1))
     print('==================================')
@@ -157,3 +161,10 @@ for epoch in trange(NUM_EPOCHS):
     print('Training loss: ', training_loss)
     print('Validation accuracy: ', validation_accuracy)
     print('Validation loss: ', validation_loss)
+plt.plot(epochs, train_accs)
+plt.plot(epochs, val_accs)
+plt.xlabel('Epoch')
+plt.ylabel('Accuracies')
+plt.title('Training/Validation Accuracies per Epoch')
+#CHANGE THE NAME FOR EACH DIFF RUN FOR MORE PICS
+plt.savefig('TransTCN_accuracies')
