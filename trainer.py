@@ -29,13 +29,13 @@ BATCH_SIZE = 16
 PARAMS = {'batch_size': BATCH_SIZE,
           'num_workers': 0}
 
-LEARNING_RATE = 5e-5
+LEARNING_RATE = 1e-5
 NUM_CHANNELS = [4, 4, 1]
 NUM_AUGMENTATIONS = 4
 DROPOUT = .5
 KERNEL_SIZE = 2
 IS_SINGLE_BERT = True
-NUM_EPOCHS = 3
+NUM_EPOCHS = 5
 
 MODEL_NAME = 'saved_models/TransTCN_model_epoch'
 PLOT_NAME = 'images/TransTCN_accuracies'
@@ -44,7 +44,7 @@ The training set
 '''
 data = pd.read_json('yelp_review_training_dataset.jsonl', lines=True)
 #Declare data.shape[0] for TEST_SIZE for training on full dataset
-TEST_SIZE = 32
+TEST_SIZE = data.shape[0]
 '''
 All of the augmentations on the training set
 '''
@@ -176,4 +176,4 @@ plt.ylabel('Accuracies')
 plt.legend(['Training Accuracy', 'Validation Accuracy'])
 plt.title('Training/Validation Accuracies per Epoch')
 #CHANGE THE NAME FOR EACH DIFF RUN FOR MORE PICS
-# plt.savefig(PLOT_NAME)
+plt.savefig(PLOT_NAME)
