@@ -37,7 +37,7 @@ def trainingTransTCN(model, data_loaders, size, eps, criterion, optimizer, sched
             batch_masks = batch_masks.flatten().reshape((batch_masks.shape[0], batch_masks.shape[2]))
             batch_masks_list.append(batch_masks.to(DEVICE))
         
-        labels = data[2]
+            labels = data[2]
 
         labels = labels.to(DEVICE)
         output = model(batch_ids_list, batch_masks_list)

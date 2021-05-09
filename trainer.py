@@ -8,6 +8,7 @@ from architects.transtcn_model import TransTCN
 from trainer_utils import trainingTransTCN, evaluateTransTCN
 from tqdm import trange
 import matplotlib.pyplot as plt
+import numpy as np
 
 '''
 MAKE SURE DEVICE IS SET CORRECTLY IN EVERY FILE.
@@ -22,7 +23,6 @@ TRAIN_TEST_SIZE = 0.1
 VAL_TEST_SIZE = 0.4
 RANDOM_STATE = 123
 
-TEST_SIZE = 32
 MAX_LENGTH = 150
 
 BATCH_SIZE = 16
@@ -35,12 +35,14 @@ NUM_AUGMENTATIONS = 4
 IS_SINGLE_BERT = True
 NUM_EPOCHS = 3
 
-
+MODEL_NAME = 'saved_models/TransTCN_model_epoch'
+PLOT_NAME = 'images/TransTCN_accuracies'
 '''
 The training set
 '''
 data = pd.read_json('yelp_review_training_dataset.jsonl', lines=True)
-
+#Declare data.shape[0] for TEST_SIZE for training on full dataset
+TEST_SIZE = 32
 '''
 All of the augmentations on the training set
 '''
@@ -68,28 +70,29 @@ synonym_aug_data['stars'] = synonym_aug_data['stars'].astype('int64')
 '''
 Train test split on data and its augmentations
 '''
-X = data['text'][:TEST_SIZE]
-y = data['stars'][:TEST_SIZE]
+indices = np.random.randint(0, data.shape[0], size=TEST_SIZE)
+X = data['text'].iloc[indices]
+y = data['stars'].iloc[indices]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TRAIN_TEST_SIZE, random_state=RANDOM_STATE)
 X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=VAL_TEST_SIZE, random_state=RANDOM_STATE)
 
-delete_X = delete_aug_data['text'][:TEST_SIZE]
-delete_y = delete_aug_data['stars'][:TEST_SIZE]
+delete_X = delete_aug_data['text'].iloc[indices]
+delete_y = delete_aug_data['stars'].iloc[indices]
 delete_X_train, delete_X_test, delete_y_train, delete_y_test = train_test_split(delete_X, delete_y, test_size=TRAIN_TEST_SIZE, random_state=RANDOM_STATE)
 delete_X_val, delete_X_test, delete_y_val, delete_y_test = train_test_split(delete_X_test, delete_y_test, test_size=VAL_TEST_SIZE, random_state=RANDOM_STATE)
 
-swap_X = swap_aug_data['text'][:TEST_SIZE]
-swap_y = swap_aug_data['stars'][:TEST_SIZE]
+swap_X = swap_aug_data['text'].iloc[indices]
+swap_y = swap_aug_data['stars'].iloc[indices]
 swap_X_train, swap_X_test, swap_y_train, swap_y_test = train_test_split(swap_X, swap_y, test_size=TRAIN_TEST_SIZE, random_state=RANDOM_STATE)
 swap_X_val, swap_X_test, swap_y_val, swap_y_test = train_test_split(swap_X_test, swap_y_test, test_size=VAL_TEST_SIZE, random_state=RANDOM_STATE)
 
-typo_X = typo_aug_data['text'][:TEST_SIZE]
-typo_y = typo_aug_data['stars'][:TEST_SIZE]
+typo_X = typo_aug_data['text'].iloc[indices]
+typo_y = typo_aug_data['stars'].iloc[indices]
 typo_X_train, typo_X_test, typo_y_train, typo_y_test = train_test_split(typo_X, typo_y, test_size=TRAIN_TEST_SIZE, random_state=RANDOM_STATE)
 typo_X_val, typo_X_test, typo_y_val, typo_y_test = train_test_split(typo_X_test, typo_y_test, test_size=VAL_TEST_SIZE, random_state=RANDOM_STATE)
 
-synonym_X = synonym_aug_data['text'][:TEST_SIZE]
-synonym_y = synonym_aug_data['stars'][:TEST_SIZE]
+synonym_X = synonym_aug_data['text'].iloc[indices]
+synonym_y = synonym_aug_data['stars'].iloc[indices]
 synonym_X_train, synonym_X_test, synonym_y_train, synonym_y_test = train_test_split(synonym_X, synonym_y, test_size=TRAIN_TEST_SIZE, random_state=RANDOM_STATE)
 synonym_X_val, synonym_X_test, synonym_y_val, synonym_y_test = train_test_split(synonym_X_test, synonym_y_test, test_size=VAL_TEST_SIZE, random_state=RANDOM_STATE)
 
@@ -157,6 +160,8 @@ for epoch in trange(NUM_EPOCHS):
     training_accuracy, training_loss = trainingTransTCN(model, loaders, len(X_train), eps, criterion, optimizer, scheduler)
     validation_accuracy, validation_loss = evaluateTransTCN(model, validation_loaders, len(X_val), eps, criterion)
     
+    torch.save(model.state_dict(), MODEL_NAME + str(epoch) + '.pth')
+
     print('Training accuracy: ', training_accuracy )
     print('Training loss: ', training_loss)
     print('Validation accuracy: ', validation_accuracy)
@@ -164,7 +169,9 @@ for epoch in trange(NUM_EPOCHS):
 plt.plot(epochs, train_accs)
 plt.plot(epochs, val_accs)
 plt.xlabel('Epoch')
+plt.xticks(epochs)
 plt.ylabel('Accuracies')
+plt.legend(['Training Accuracy', 'Validation Accuracy'])
 plt.title('Training/Validation Accuracies per Epoch')
 #CHANGE THE NAME FOR EACH DIFF RUN FOR MORE PICS
-# plt.savefig('TransTCN_accuracies')
+# plt.savefig(PLOT_NAME)
