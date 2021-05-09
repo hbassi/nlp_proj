@@ -32,6 +32,8 @@ PARAMS = {'batch_size': BATCH_SIZE,
 LEARNING_RATE = 5e-5
 NUM_CHANNELS = [4, 4, 1]
 NUM_AUGMENTATIONS = 4
+DROPOUT = .5
+KERNEL_SIZE = 2
 IS_SINGLE_BERT = True
 NUM_EPOCHS = 3
 
@@ -140,7 +142,7 @@ validation_loaders = [loader_tokenized_validation_data, loader_tokenized_validat
 '''
 MODEL
 '''
-model = TransTCN(classes=5, num_augmentations=NUM_AUGMENTATIONS, input_size=NUM_AUGMENTATIONS,num_channels=NUM_CHANNELS, is_single_bert=IS_SINGLE_BERT)
+model = TransTCN(classes=5, num_augmentations=NUM_AUGMENTATIONS, input_size=NUM_AUGMENTATIONS,num_channels=NUM_CHANNELS, kernel_size=KERNEL_SIZE, dropout=DROPOUT, is_single_bert=IS_SINGLE_BERT)
 model = model.to(DEVICE)
 criterion = nn.CrossEntropyLoss().to(DEVICE)
 optimizer = AdamW(model.parameters(), lr=LEARNING_RATE, correct_bias=False)
